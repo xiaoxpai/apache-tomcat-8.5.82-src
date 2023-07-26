@@ -1,0 +1,6 @@
+构建工程成功
+日期：  2022/12/13 上午 11:26 - Build completed successfully with 17 warnings in 38 sec, 38 ms
+
+更新
+日期：2023年3月8日
+初次研究tomcat性能调优参数优化，详情看doc目录下的文档
