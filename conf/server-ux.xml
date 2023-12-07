@@ -19,13 +19,27 @@
 
 
   <Service name="Catalina">
-    <!-- 字节流 -HttpRequestServlet req 解析 -->
-    <Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443"/>
+    <!--  连接器 maxThread默认最大连接数200
+    redirectPort：当接收的协议是https，默认转发到该端口
+    enableLookups: 是否通过request.getRemoteHost()进行DNS查询获取客户端主机名，默认true
+    acceptCount:设置等待队列最大长度，所有处理线程处于繁忙状态时，新发来的请求被放置于等待队列中
+    -->
+    <Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"
+               redirectPort="8443" maxThread="200" enableLookups="false" acceptCount="100"/>
+    <!-- AJP : apache jserv protocol 二进制协议，使用htttpd反向代理用户请求至tomcat，在httpd和tomcat之间使用 -->
+    <Connector port="8009" protocol="AJP/1.3"   redirectPort="8443"/>
+
 
     <Engine name="Catalina" defaultHost="localhost">
       <Realm className="org.apache.catalina.realm.LockOutRealm">
         <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
       </Realm>
+      <!--
+      接收请求并进行相应处理的主机或虚拟主机
+      1.appBase:
+      2.unpackWARs:
+      3.autoDeploy:
+      -->
       <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log" suffix=".txt"
